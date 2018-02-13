@@ -27,9 +27,9 @@ import currencyBusiness.Currencies;
  */
 public class DataProcessing {
 
-    private static final HashMap<String, String> currency = new Currencies().currencies;
+    private final HashMap<String, String> currency = new Currencies().currencies;
 
-    DataProcessing() {
+    public DataProcessing() {
     }
 
     /**
@@ -39,7 +39,7 @@ public class DataProcessing {
      * @param rateX - Float - float value.
      * @param rateY - Float - float value.
      */
-    protected static Pair<Float, Float> computeRatio(Float rateX, Float rateY ) {
+    protected Pair<Float, Float> computeRatio(Float rateX, Float rateY ) {
         Float rateXtoY = rateY/rateX;
         Float rateYtoX = rateX/rateY;
 
@@ -53,7 +53,7 @@ public class DataProcessing {
      * @param couple couple - Vector - Raw data from file : Amount and Currency grab from a line file.
      * @param processedCouple - Vector - Vector of exchanges rates for each currencies
      */
-    protected static void computeExchangeRate(Vector < Pair<String, String> > couple, Vector < Pair <Pair<String,String>, Float> > processedCouple ) {
+    protected void computeExchangeRate(Vector < Pair<String, String> > couple, Vector < Pair <Pair<String,String>, Float> > processedCouple ) {
         if (couple.size() == 2) {
             Pair <Pair <String, String>, Float> exchangeRateX; // Currency - unit  <EUR,1>
             Pair <Pair <String, String>, Float> exchangeRateY; // Currency - unit <USD,1.19>
@@ -81,7 +81,7 @@ public class DataProcessing {
      * @param line - String - line of text issued from raw data file.
      * @param currenciesPair - Vector - currencies exchange rate data structure.
      */
-    private static void processFileLine(String line, Vector<Pair<Pair<String,String>, Float> > currenciesPair) {
+    private void processFileLine(String line, Vector<Pair<Pair<String,String>, Float> > currenciesPair) {
         Pattern rateRe              = Pattern.compile("[0-9]+(\\.[0-9]*)?");
         Pattern currencyRe          = Pattern.compile("USD|EUR|CHF|GBP|OMR|BHD|KWH|SGD");
         Matcher rateMatch           = rateRe.matcher(line);
@@ -103,7 +103,7 @@ public class DataProcessing {
      * Process every line and update currencies exchange rate data structure.
      * @param date - String - file date
      */
-    protected static Vector<Pair<Pair<String,String>, Float> > readFile(String date) {
+    protected Vector<Pair<Pair<String,String>, Float> > readFile(String date) {
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         String path = String.format("./data/%s.txt", date);
 
@@ -134,7 +134,7 @@ public class DataProcessing {
      * @param currencies - HashMap - List of currencies and associated number.
      * @param rates - Float[][] - 2D array structure of rates
      */
-    protected static void writeFile(String date, HashMap<String, Integer> currencies, Float[][] rates) {
+    protected void writeFile(String date, HashMap<String, Integer> currencies, Float[][] rates) {
         try {
             String path         = String.format("%s.json", date);
             FileWriter writer   = new FileWriter(path);
@@ -162,7 +162,7 @@ public class DataProcessing {
      * Return a Map of currencies and associated unique number.
      * Map used to identify currency into matrice
      */
-    protected static HashMap<String, Integer> getCurrenciesMap() {
+    protected HashMap<String, Integer> getCurrenciesMap() {
         // Set an index for each currency
         int index=0;
         HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
@@ -180,7 +180,7 @@ public class DataProcessing {
      * @param currenciesMap - map of currencies and associated unique number.
      * @param currenciesPair - currencies exchange rate data structure.
      */
-    protected static Float[][] getExchangeRatesMatrix(HashMap<String, Integer> currenciesMap, Vector< Pair<Pair<String, String>, Float> > currenciesPair) {
+    protected Float[][] getExchangeRatesMatrix(HashMap<String, Integer> currenciesMap, Vector< Pair<Pair<String, String>, Float> > currenciesPair) {
 
         int length = currenciesMap.size();
 
@@ -227,7 +227,7 @@ public class DataProcessing {
      * @param date - String - date to check.
      * @param currencyId - String - Id of the currency
      */
-    public static String getCurrenciesExchangeRateByDateInCurrency(String date, String currencyId) {
+    public String getCurrenciesExchangeRateByDateInCurrency(String date, String currencyId) {
         HashMap<String, Integer> currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         currenciesPair = readFile(date);
@@ -236,7 +236,7 @@ public class DataProcessing {
         Currencies data = new Currencies();
         data.setCurrenciesMap(currenciesMap);
         data.setRates(rates);
-        String response = data.getAllExchangeRateAtDate(date, "USD");
+        String response = data.getAllExchangeRateAtDate(date, currencyId);
 
         return response;
 
@@ -249,7 +249,7 @@ public class DataProcessing {
      * @param currencyX - String - first currency
      * @param currencyY - String - second currency
      */
-    public static String getCurrenciesExchangeRateByDateBetweenCurrencies(String date, String currencyX, String currencyY) {
+    public String getCurrenciesExchangeRateByDateBetweenCurrencies(String date, String currencyX, String currencyY) {
         HashMap<String, Integer> currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
 
@@ -270,7 +270,7 @@ public class DataProcessing {
      * @param dateY - String - ending date
      * @param currency - String - currency id
      */
-    public static ArrayList getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
+    public ArrayList getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
         HashMap<String, Integer > currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         ArrayList<String> response = new ArrayList<String>();

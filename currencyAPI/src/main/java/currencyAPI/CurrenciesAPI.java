@@ -5,18 +5,19 @@ import java.lang.String;
 import java.util.ArrayList;
 
 public class CurrenciesAPI {
+    CurrenciesProcessing currenciesProcessing = new CurrenciesProcessing();
     public CurrenciesAPI() {
     }
 
-    public static String getAllCurrencies(String date) {
-        return CurrenciesProcessing.getAllCurrenciesExchangeRate(date);
+    public String getAllCurrencies(String date) {
+        return currenciesProcessing.getAllCurrenciesExchangeRate(date);
     }
 
-    public static String getCurrenciesExchangeRate(String date, String currencyX, String currencyY) {
-        return CurrenciesProcessing.getCurrenciesExchangeRate(date, currencyX, currencyY);
+    public String getCurrenciesExchangeRate(String date, String currencyX, String currencyY) {
+        return currenciesProcessing.getCurrenciesExchangeRate(date, currencyX, currencyY);
     }
 
-    public static ArrayList getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
-        return CurrenciesProcessing.getCurrenciesExchangeRateRange(dateX, dateY, currency);
+    public ArrayList getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
+        return currenciesProcessing.getCurrenciesExchangeRateRange(dateX, dateY, currency);
     }
 }
