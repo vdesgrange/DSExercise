@@ -25,7 +25,7 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            HashMap<String, Float> currencies = new HashMap<String, Float>();
+            HashMap<String, String> currencies = new HashMap<String, String>();
             currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
             log.info(currencies.toString());
         } catch (ResourceAccessException e) {
@@ -44,7 +44,7 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            HashMap<String, Float> currencies = new HashMap<String, Float>();
+            HashMap<String, String> currencies = new HashMap<String, String>();
             currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
             log.info(currencies.toString());
         } catch (ResourceAccessException e) {
@@ -63,8 +63,8 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            Vector<Pair<Pair<String, String>, Float>> currencies;
-            currencies = restTemplate.getForObject(builder.toUriString(), Vector.class);
+            HashMap<String, String> currencies = new HashMap<String, String>();
+            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
             log.info(currencies.toString());
         } catch (ResourceAccessException e) {
             e.printStackTrace();

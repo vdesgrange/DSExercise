@@ -4,8 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework</groupId>
-    <artifactId>gs-consuming-rest</artifactId>
+    <artifactId>ds-client</artifactId>
     <version>0.1.0</version>
+
+    <name>Currency Client</name>
+    <url>https://github.com/vdesgrange/DSExercise/tree/master/currencyClient</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>

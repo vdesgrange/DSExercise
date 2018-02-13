@@ -167,10 +167,10 @@ public class DataProcessing {
         return rates;
     }
 
-    public static HashMap<String, Float> getCurrenciesExchangeRateByDateInCurrency(String date, String currencyId) {
+    public static HashMap getCurrenciesExchangeRateByDateInCurrency(String date, String currencyId) {
         // Set an index for each currency
+        HashMap <String, HashMap <Pair <String, String>, Float> > data = new HashMap <String, HashMap <Pair <String, String>, Float> >();
         HashMap<String, Integer> currenciesMap = getCurrenciesMap();
-
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         currenciesPair = readFile(date);
 
@@ -178,42 +178,44 @@ public class DataProcessing {
 
         Integer currencyIndex = currenciesMap.get(currencyId);
 
-        HashMap<String, Float> exchangeRateMap = new HashMap<String, Float>();
-        for (HashMap.Entry<String, Integer> curr: currenciesMap.entrySet())
-            exchangeRateMap.put(curr.getKey(), rates[curr.getValue()][currencyIndex]);
-
-        return exchangeRateMap;
+        HashMap<Pair<String, String>, Float> exchangeRateMap = new HashMap<Pair<String,String>, Float>();
+        for (HashMap.Entry<String, Integer> curr: currenciesMap.entrySet()) {
+            exchangeRateMap.put(new Pair<String, String>(curr.getKey(),currencyId), rates[curr.getValue()][currencyIndex]);
+        }
+        data.put(date, exchangeRateMap);
+        return data;
     }
 
     public static HashMap getCurrenciesExchangeRateByDateBetweenCurrencies(String date, String currencyX, String currencyY) {
         // Set an index for each currency
+        HashMap <String, HashMap <Pair <String, String>, Float> > data = new HashMap <String, HashMap <Pair <String, String>, Float> >();
         HashMap<String, Integer> currenciesMap = getCurrenciesMap();
-
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
-        currenciesPair = readFile(date);
+        HashMap<Pair<String, String>, Float> exchangeRateMap = new HashMap<Pair<String,String>, Float>();
 
+        currenciesPair = readFile(date);
         Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
         Integer currencyXIndex = currenciesMap.get(currencyX);
         Integer currencyYIndex = currenciesMap.get(currencyY);
 
-        HashMap<Pair<String, String>, Float> exchangeRateMap = new HashMap<Pair<String, String>, Float>();
         exchangeRateMap.put(new Pair<String, String>(currencyX, currencyY), rates[currencyXIndex][currencyYIndex]);
         exchangeRateMap.put(new Pair<String, String>(currencyY, currencyX), rates[currencyYIndex][currencyXIndex]);
+        data.put(date, exchangeRateMap);
 
-        return exchangeRateMap;
+        return data;
     }
 
-    public static Vector getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
+    public static HashMap getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
         // Set an index for each currency
+        HashMap <String, HashMap <Pair <String, String>, Float> > data = new HashMap <String, HashMap <Pair <String, String>, Float> >();
         HashMap<String, Integer > currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
-        Vector<Pair<Pair<String, String>, Float> > exchangeRateVector = new Vector<Pair< Pair<String, String>, Float> >();
-        Integer currencyXIndex = currenciesMap.get(currency);
-        Integer currencyYIndex = currenciesMap.get("USD");
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar calendar   = Calendar.getInstance();
-        Date endingDate = new Date();
+        Integer currencyXIndex  = currenciesMap.get(currency);
+        Integer currencyYIndex  = currenciesMap.get("USD");
+        SimpleDateFormat sdf    = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar calendar       = Calendar.getInstance();
+        Date endingDate         = new Date();
 
         try {
             endingDate = sdf.parse(dateY);
@@ -223,15 +225,20 @@ public class DataProcessing {
         }
 
         while (calendar.getTime().compareTo(endingDate) <= 0) {
-            currenciesPair  = readFile(sdf.format(calendar.getTime()));
+            String date = sdf.format(calendar.getTime());
+            currenciesPair  = readFile(date);
+            HashMap<Pair<String, String>, Float> exchangeRateMap = new HashMap<Pair<String,String>, Float>();
+
             if (currenciesPair.size() > 0) {
                 Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
-                exchangeRateVector.add(new Pair<Pair<String, String>, Float>(new Pair<String, String>(currency, "USD"), rates[currencyXIndex][currencyYIndex]) );
+                exchangeRateMap.put(new Pair<String, String>(currency, "USD"), rates[currencyXIndex][currencyYIndex]);
             }
+            data.put(date, exchangeRateMap);
             calendar.add(Calendar.DAY_OF_MONTH, 1);
+
         }
 
-        return exchangeRateVector;
+        return data;
     }
 
 }
