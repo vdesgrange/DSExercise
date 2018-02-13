@@ -12,8 +12,7 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.client.ResourceAccessException;
 
-import java.util.HashMap;
-import java.util.Vector;
+import java.util.ArrayList;
 import javafx.util.Pair;
 import client.APIErrorHandler;
 
@@ -39,9 +38,8 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            HashMap<String, String> currencies = new HashMap<String, String>();
-            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class); // Get raw data into object
-            log.info(currencies.toString()); // Display raw data
+            String data = restTemplate.getForObject(builder.toUriString(), String.class); // Get raw data into object
+            log.info(data); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
@@ -66,9 +64,8 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            HashMap<String, String> currencies = new HashMap<String, String>();
-            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
-            log.info(currencies.toString()); // Display raw data
+            String data = restTemplate.getForObject(builder.toUriString(), String.class);
+            log.info(data); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
@@ -93,9 +90,9 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            HashMap<String, String> currencies = new HashMap<String, String>();
-            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class); // Get data from the Uri.
-            log.info(currencies.toString()); // Display raw data
+            ArrayList<String> data = new ArrayList<String>();
+            data = restTemplate.getForObject(builder.toUriString(), ArrayList.class); // Get data from the Uri.
+            log.info(data.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }

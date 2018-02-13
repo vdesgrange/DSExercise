@@ -5,8 +5,7 @@
 package currencyBusiness;
 
 import java.lang.String;
-import java.util.HashMap;
-import javafx.util.Pair;
+import java.util.ArrayList;
 import currencyBusiness.DataProcessing;
 
 /**
@@ -22,7 +21,7 @@ public class CurrenciesProcessing {
      * getAllCurrenciesRate
      * Return list of exchanges rates between a specified currency and USD, on specified date.
      */
-    public static HashMap getAllCurrenciesExchangeRate(String date) {
+    public static String getAllCurrenciesExchangeRate(String date) {
         return DataProcessing.getCurrenciesExchangeRateByDateInCurrency(date, "USD");
     }
 
@@ -30,7 +29,7 @@ public class CurrenciesProcessing {
      * getCurrenciesExchangeRate
      * Return exchanges rates between two currencies X and Y on a specified date.
      */
-    public static HashMap getCurrenciesExchangeRate(String date, String currencyX, String currencyY) {
+    public static String getCurrenciesExchangeRate(String date, String currencyX, String currencyY) {
         return DataProcessing.getCurrenciesExchangeRateByDateBetweenCurrencies(date, currencyX, currencyY);
     }
 
@@ -38,7 +37,7 @@ public class CurrenciesProcessing {
      * getCurrenciesExchangeRateRange
      * Return on a date range list of exchange rate between specified currency and USD.
      */
-    public static HashMap getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
+    public static ArrayList getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
         return DataProcessing.getCurrenciesExchangeRateByDateInRange(dateX, dateY, currency);
     }
 }
