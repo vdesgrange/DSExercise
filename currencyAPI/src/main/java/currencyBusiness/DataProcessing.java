@@ -1,3 +1,7 @@
+/**
+ * @author Viviane Desgrange
+ */
+
 package currencyBusiness;
 
 import java.util.Calendar;
@@ -16,6 +20,10 @@ import java.io.*;
 
 import currencyBusiness.Currencies;
 
+/**
+ * DataProcessing
+ * Raw data processing methods.
+ */
 public class DataProcessing {
 
     private static final HashMap<String, String> currency = new Currencies().currencies;
@@ -23,6 +31,13 @@ public class DataProcessing {
     DataProcessing() {
     }
 
+    /**
+     * computeRatio
+     * Compute ratio between two Float values.
+     * Return both Float value within a Pair.
+     * @param rateX - Float - float value.
+     * @param rateY - Float - float value.
+     */
     protected static Pair<Float, Float> computeRatio(Float rateX, Float rateY ) {
         Float rateXtoY = rateY/rateX;
         Float rateYtoX = rateX/rateY;
@@ -30,10 +45,17 @@ public class DataProcessing {
         return new Pair<Float, Float>(rateXtoY, rateYtoX);
     }
 
+    /**
+     * computeExchangeRate
+     * Received currencies and their amount grab from a file line.
+     * Process them to return a data structure with exchange rate between both currencies.
+     * @param couple couple - Vector - Raw data from file : Amount and Currency grab from a line file.
+     * @param processedCouple - Vector - Vector of exchanges rates for each currencies
+     */
     protected static void computeExchangeRate(Vector < Pair<String, String> > couple, Vector < Pair <Pair<String,String>, Float> > processedCouple ) {
         if (couple.size() == 2) {
-            Pair <Pair <String, String>, Float> exchangeRateX;
-            Pair <Pair <String, String>, Float> exchangeRateY;
+            Pair <Pair <String, String>, Float> exchangeRateX; // Currency - unit  <EUR,1>
+            Pair <Pair <String, String>, Float> exchangeRateY; // Currency - unit <USD,1.19>
 
 
             Pair<String, String> itemX = couple.get(0);
@@ -50,7 +72,14 @@ public class DataProcessing {
         return;
     }
 
-
+    /**
+     * processFileLine
+     * Get currencies and rate from the line.
+     * Process currencies and rate in order to get ration between currencies.
+     * Updatet currencies exchange rate data structure.
+     * @param line - String - line of text issued from raw data file.
+     * @param currenciesPair - Vector - currencies exchange rate data structure.
+     */
     private static void processFileLine(String line, Vector<Pair<Pair<String,String>, Float> > currenciesPair) {
         Pattern rateRe              = Pattern.compile("[0-9]+(\\.[0-9]*)?");
         Pattern currencyRe          = Pattern.compile("USD|EUR|CHF|GBP|OMR|BHD|KWH|SGD");
@@ -67,6 +96,12 @@ public class DataProcessing {
 
     }
 
+    /**
+     * readFile
+     * Read a file associated to a given date (format yyyy-MM-dd).
+     * Process every line and update currencies exchange rate data structure.
+     * @param date - String - file date
+     */
     protected static Vector<Pair<Pair<String,String>, Float> > readFile(String date) {
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         String path = String.format("./data/%s.txt", date);
@@ -91,6 +126,13 @@ public class DataProcessing {
         return currenciesPair;
     }
 
+    /**
+     * writeFile
+     * @param date - String - new file name
+     * Wrote processed data into csv file.
+     * @param currencies - HashMap - List of currencies and associated number.
+     * @param rates - Float[][] - 2D array structure of rates
+     */
     protected static void writeFile(String date, HashMap<String, Integer> currencies, Float[][] rates) {
         try {
             String path         = String.format("%s.csv", date);
@@ -115,6 +157,11 @@ public class DataProcessing {
         }
     }
 
+    /**
+     * getCurrenciesMap
+     * Return a Map of currencies and associated unique number.
+     * Map used to identify currency into matrice
+     */
     protected static HashMap<String, Integer> getCurrenciesMap() {
         // Set an index for each currency
         int index=0;
@@ -126,6 +173,13 @@ public class DataProcessing {
         return currenciesMap;
     }
 
+    /**
+     * getExchangeRatesMatrix
+     * Process exchange rates between every currencies availables.
+     * Return a 2D Float array.
+     * @param currenciesMap - map of currencies and associated unique number.
+     * @param currenciesPair - currencies exchange rate data structure.
+     */
     protected static Float[][] getExchangeRatesMatrix(HashMap<String, Integer> currenciesMap, Vector< Pair<Pair<String, String>, Float> > currenciesPair) {
 
         int length = currenciesMap.size();
@@ -149,7 +203,7 @@ public class DataProcessing {
             rates[idTo][idFrom] = new Float(1.)/obj.getValue();
         }
 
-        // Floyd Warshall
+        // Floyd Warshall algorithm in order to compute exchange rates between currencies.
         for(int i=0; i < length; i++) {
             for(int j=0; j < length; j++) {
                 for(int k=0; k < length; k++) {
@@ -167,6 +221,12 @@ public class DataProcessing {
         return rates;
     }
 
+    /**
+     * getCurrenciesExchangeRateByDateInCurrency
+     * Return list of exchanges rates between a specified currency and USD, on specified date.
+     * @param date - String - date to check.
+     * @param currencyId - String - Id of the currency
+     */
     public static HashMap getCurrenciesExchangeRateByDateInCurrency(String date, String currencyId) {
         // Set an index for each currency
         HashMap <String, HashMap <Pair <String, String>, Float> > data = new HashMap <String, HashMap <Pair <String, String>, Float> >();
@@ -186,6 +246,13 @@ public class DataProcessing {
         return data;
     }
 
+    /**
+     * getCurrenciesExchangeRateByDateBetweenCurrencies
+     * Return exchanges rates between two currencies X and Y on a specified date.
+     * @param date - String - date to check
+     * @param currencyX - String - first currency
+     * @param currencyY - String - second currency
+     */
     public static HashMap getCurrenciesExchangeRateByDateBetweenCurrencies(String date, String currencyX, String currencyY) {
         // Set an index for each currency
         HashMap <String, HashMap <Pair <String, String>, Float> > data = new HashMap <String, HashMap <Pair <String, String>, Float> >();
@@ -205,6 +272,13 @@ public class DataProcessing {
         return data;
     }
 
+    /**
+     * getCurrenciesExchangeRateByDateInRange
+     * Return on a date range list of exchange rate between specified currency and USD.
+     * @param dateX - String - starting date
+     * @param dateY - String - ending date
+     * @param currency - String - currency id
+     */
     public static HashMap getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
         // Set an index for each currency
         HashMap <String, HashMap <Pair <String, String>, Float> > data = new HashMap <String, HashMap <Pair <String, String>, Float> >();

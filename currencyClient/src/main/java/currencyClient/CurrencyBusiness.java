@@ -1,3 +1,6 @@
+/**
+ * @author Viviane Desgrange
+ */
 package client;
 
 import java.lang.String;
@@ -7,6 +10,11 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 import java.util.regex.Matcher;
 
+/**
+ * CurrencyBusiness
+ * General methods from Client side.
+ * Shell interface and processing methods.
+ */
 public class CurrencyBusiness {
 
     private static final HashMap<String, String> currency = new Currencies().currencies;
@@ -14,6 +22,12 @@ public class CurrencyBusiness {
     CurrencyBusiness() {
     }
 
+    /**
+     * processUserEntry
+     * Check the content of the user entry into shell.
+     * Get currencies and dates. Call API endpoint depending on entries.
+     * @param entry - String - user entry
+     */
     private static boolean processUserEntry(String entry) {
         boolean exit            = false;
         String text             = entry;
@@ -27,11 +41,11 @@ public class CurrencyBusiness {
 
         exit = Pattern.matches("exit", text);
 
-        if (exit) {
+        if (exit) { // User entry is "exit", stop the client.
 
             return exit;
 
-        } else if (Pattern.matches("currencies", text)) {
+        } else if (Pattern.matches("currencies", text)) { // User entry is "currencies", list all currencies.
 
             System.out.println("\n ###### List of all currencies availables ######");
             for (HashMap.Entry<String,String> item : currency.entrySet()) {
@@ -41,19 +55,19 @@ public class CurrencyBusiness {
 
         } else {
 
-            while (dateMatch.find()) {
+            while (dateMatch.find()) { // Find dates into user entry
                 dateList.add(dateMatch.group());
             }
 
-            while(currencyMatch.find()) {
+            while(currencyMatch.find()) { // Find currencies into user entry
                 currList.add(currencyMatch.group());
             }
 
-            if (dateList.size() == 1 && currList.size() == 0) {
+            if (dateList.size() == 1 && currList.size() == 0) { // Only one date - display all currencies to USD
                 Application.getAllCurrencies(dateList.get(0));
-            } else if (dateList.size() == 1 && currList.size() == 2) {
+            } else if (dateList.size() == 1 && currList.size() == 2) { // One date - two currencies -> display exchange rate between currencies.
                 Application.getCurrenciesExchangeRate(dateList.get(0), currList.get(0), currList.get(1));
-            } else if (dateList.size() == 2 && currList.size() == 1) {
+            } else if (dateList.size() == 2 && currList.size() == 1) { // Two dates - one currency -> display exchange rate to USD in date range.
                 Application.getCurrenciesExchangeRateRange(dateList.get(0), dateList.get(1), currList.get(0));
             }
 
@@ -62,6 +76,10 @@ public class CurrencyBusiness {
         return exit;
     }
 
+    /**
+     * userInterface
+     * Display small shell interface.
+     */
     protected static void userInterface() {
         boolean exit    = false;
         String entry    = "";
@@ -80,6 +98,10 @@ public class CurrencyBusiness {
         return;
     }
 
+    /**
+     * main
+     * Call user interface
+     */
     public static void main(String args[]) {
         userInterface();
     }

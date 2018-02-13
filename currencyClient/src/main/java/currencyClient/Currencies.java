@@ -1,3 +1,6 @@
+/**
+ * @author Viviane Desgrange
+ */
 package client;
 
 import java.lang.String;
@@ -5,6 +8,12 @@ import java.util.HashMap;
 import javafx.util.Pair;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
+/**
+ * Currencies
+ * Class discribing currencies object.
+ * List all currencies available.
+ * Handle currencies data structure.
+ */
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Currencies {
     protected static final HashMap<String, String> currencies = new HashMap<String, String>();

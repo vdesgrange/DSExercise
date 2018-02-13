@@ -1,3 +1,7 @@
+/**
+ * @author Viviane Desgrange
+ */
+
 package client;
 
 import org.slf4j.Logger;
@@ -13,12 +17,22 @@ import java.util.Vector;
 import javafx.util.Pair;
 import client.APIErrorHandler;
 
+/**
+ * Application
+ * Application public class fetch data from RESTful api by using RestTemplate.
+ */
 public class Application {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
+    /**
+     * getAllCurrencies
+     * Get exchange rates from all currencies to USD currency.
+     * It call api endpoint "/currencies" with parameters "date".
+     * @param date - String date (format yyyy-MM-dd) used to get date currencies
+     */
     public static void getAllCurrencies(String date) {
-        String transactionUrl = "http://localhost:8080/currencies";
-        UriComponentsBuilder builder = UriComponentsBuilder
+        String transactionUrl = "http://localhost:8080/currencies"; // endpoint
+        UriComponentsBuilder builder = UriComponentsBuilder // create Uri
             .fromUriString(transactionUrl)
             .queryParam("date",date);
 
@@ -26,16 +40,24 @@ public class Application {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
             HashMap<String, String> currencies = new HashMap<String, String>();
-            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
-            log.info(currencies.toString());
+            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class); // Get raw data into object
+            log.info(currencies.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * getCurrenciesExchangeRate
+     * Get exchange rates between 2 currencies on a specific date.
+     * It call api endpoint "/currencies" with parameters "date", "currencyA", "currencyB".
+     * @param date - String - date (format yyyy-MM-dd) used to get date currencies
+     * @param currencyA - String - first currency
+     * @param currencyB - String - second currency.
+     */
     public static void getCurrenciesExchangeRate(String date, String currencyA, String currencyB) {
-        String transactionUrl = "http://localhost:8080/currencies";
-        UriComponentsBuilder builder = UriComponentsBuilder
+        String transactionUrl = "http://localhost:8080/currencies"; // endpoint
+        UriComponentsBuilder builder = UriComponentsBuilder // create Uri
             .fromUriString(transactionUrl)
             .queryParam("date", date)
             .queryParam("currencyA", currencyA)
@@ -46,15 +68,23 @@ public class Application {
             restTemplate.setErrorHandler(new APIErrorHandler());
             HashMap<String, String> currencies = new HashMap<String, String>();
             currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
-            log.info(currencies.toString());
+            log.info(currencies.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * getCurrenciesExchangeRateRange
+     * Get exchange rates from a currency to USD on a date range.
+     * It call api endpoint "/currencies" with parameters "startingDate", "endingDate", "currency".
+     * @param startingDate - String - starting date (format yyyy-MM-dd) Start of the date range.
+     * @param endingDate - String - ending date (format yyyy-MM-dd) End of the date range.
+     * @param currency - String - currency requested.
+     */
     public static void getCurrenciesExchangeRateRange(String startingDate, String endingDate, String currency) {
-        String transactionUrl = "http://localhost:8080/currencies";
-        UriComponentsBuilder builder = UriComponentsBuilder
+        String transactionUrl = "http://localhost:8080/currencies"; // endpoint
+        UriComponentsBuilder builder = UriComponentsBuilder // create Uri
             .fromUriString(transactionUrl)
             .queryParam("startingDate", startingDate)
             .queryParam("endingDate", endingDate)
@@ -64,8 +94,8 @@ public class Application {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
             HashMap<String, String> currencies = new HashMap<String, String>();
-            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class);
-            log.info(currencies.toString());
+            currencies = restTemplate.getForObject(builder.toUriString(), HashMap.class); // Get data from the Uri.
+            log.info(currencies.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
