@@ -51,4 +51,66 @@ public class DataProcessingTest {
         assertEquals(expected, actual);
     }
 
+    @Test
+    public void getCurrenciesExchangeRateByDateInCurrencyCache() {
+        String date = "2017-01-01";
+        String currency = "EUR";
+        String expected = "";
+        String actual = "";
+        actual = dataProcessing.getCurrenciesExchangeRateByDateInCurrency(date, currency);
+        expected = "{" +
+            "\"2017-01-01\":[" +
+                "{\"from\":\"CHF\",\"to\":\"USD\",\"rate\":1.04}," +
+                "{\"from\":\"SGD\",\"to\":\"USD\",\"rate\":0.74}," +
+                "{\"from\":\"EUR\",\"to\":\"USD\",\"rate\":1.19}," +
+                "{\"from\":\"GBP\",\"to\":\"USD\",\"rate\":1.3}," +
+                "{\"from\":\"OMR\",\"to\":\"USD\",\"rate\":2.6}," +
+                "{\"from\":\"USD\",\"to\":\"USD\",\"rate\":1.0}," +
+                "{\"from\":\"KWD\",\"to\":\"USD\",\"rate\":-1.0}," +
+                "{\"from\":\"BHD\",\"to\":\"USD\",\"rate\":2.65}" +
+            "]" +
+        "}";
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getCurrenciesExchangeRateByDateBetweenCurrencies() {
+        String date = "2017-01-01";
+        String currencyX = "CHF";
+        String currencyY = "GBP";
+        String expected = "";
+        String actual = "";
+        actual = dataProcessing.getCurrenciesExchangeRateByDateBetweenCurrencies(date, currencyX, currencyY);
+        expected = "{" +
+            "\"2017-01-01\":[" +
+                "{\"from\":\"CHF\",\"to\":\"GBP\",\"rate\":0.8}," +
+                "{\"from\":\"GBP\",\"to\":\"CHF\",\"rate\":1.25}" +
+            "]" +
+        "}";
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    public void getCurrenciesExchangeRateByDateInRange() {
+        String dateX = "2017-01-01";
+        String dateY = "2017-01-02";
+        String currency = "CHF";
+        String expected = "";
+        String actual = "";
+        actual = dataProcessing.getCurrenciesExchangeRateByDateInRange(dateX, dateY, currency);
+        expected = "[" +
+            "{\"2017-01-01\":[" +
+            "{\"from\":\"CHF\",\"to\":\"USD\",\"rate\":1.04}," +
+            "{\"from\":\"USD\",\"to\":\"CHF\",\"rate\":0.9615385}" +
+            "]}," +
+            "{\"2017-01-02\":[" +
+            "{\"from\":\"CHF\",\"to\":\"USD\",\"rate\":1.24}," +
+            "{\"from\":\"USD\",\"to\":\"CHF\",\"rate\":0.8064516}" +
+            "]}" +
+        "]";
+
+        assertEquals(expected, actual);
+    }
 }

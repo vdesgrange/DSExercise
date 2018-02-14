@@ -35,7 +35,7 @@ public class CurrenciesController {
         value = "/currencies",
         params = {"startingDate","endingDate","currency"},
         method = RequestMethod.GET)
-    public ArrayList getCurrenciesExchangeRateRange(
+    public String getCurrenciesExchangeRateRange(
             @RequestParam(value="startingDate", defaultValue="2017-01-01") String startingDate,
             @RequestParam(value="endingDate", defaultValue="2017-01-01") String endingDate,
             @RequestParam(value="currency", defaultValue="EUR") String currency) {

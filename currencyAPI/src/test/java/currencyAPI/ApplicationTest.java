@@ -95,18 +95,14 @@ public class ApplicationTest {
             .queryParam("endingDate", "2017-01-02")
             .queryParam("currency", "SGD");
         validResponse = "[" +
-            "{" +
-                "\"2017-01-01\":[" +
-                    "{\"from\":\"SGD\",\"to\":\"USD\",\"rate\":0.74}," +
-                    "{\"from\":\"USD\",\"to\":\"SGD\",\"rate\":1.3513514}" +
-                "]" +
-            "}," +
-            "{" +
-                "\"2017-01-02\":[" +
-                    "{\"from\":\"SGD\",\"to\":\"USD\",\"rate\":0.23999998}," +
-                    "{\"from\":\"USD\",\"to\":\"SGD\",\"rate\":4.166667}" +
-                "]" +
-            "}" +
+            "{\"2017-01-01\":[" +
+            "{\"from\":\"SGD\",\"to\":\"USD\",\"rate\":0.74}," +
+            "{\"from\":\"USD\",\"to\":\"SGD\",\"rate\":1.3513514}" +
+            "]}," +
+            "{\"2017-01-02\":[" +
+            "{\"from\":\"SGD\",\"to\":\"USD\",\"rate\":0.23999998}," +
+            "{\"from\":\"USD\",\"to\":\"SGD\",\"rate\":4.166667}" +
+            "]}" +
         "]";
         response = this.restTemplate.getForObject(builder.toUriString(), String.class);
 

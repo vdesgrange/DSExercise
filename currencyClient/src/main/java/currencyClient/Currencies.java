@@ -26,7 +26,7 @@ public class Currencies {
         this.currencies.put("GBP", "British Pound");
         this.currencies.put("OMR", "Omani Rial");
         this.currencies.put("BHD", "Bahraini Dinar");
-        this.currencies.put("KWH", "Kuwaiti Dinar");
+        this.currencies.put("KWD", "Kuwaiti Dinar");
         this.currencies.put("SGD", "Singapore Dollar");
     }
 

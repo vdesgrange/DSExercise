@@ -43,7 +43,7 @@ public class CurrenciesProcessing {
      * Return on a date range list of exchange rate between specified currency and USD.
      */
     @Cacheable(value="getCurrenciesExchangeRateRangeCache")
-    public ArrayList getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
+    public String getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
         return dataProcessing.getCurrenciesExchangeRateByDateInRange(dateX, dateY, currency);
     }
 }

@@ -33,7 +33,7 @@ public class CurrencyBusiness {
         String text             = entry;
         String date             = "";
         Pattern dateRe          = Pattern.compile("([0-9]{4})-([0-9]{2})-([0-9]{2})");
-        Pattern currencyRe      = Pattern.compile("USD|EUR|CHF|GBP|OMR|BHD|KWH|SGD");
+        Pattern currencyRe      = Pattern.compile("USD|EUR|CHF|GBP|OMR|BHD|KWD|SGD");
         Matcher dateMatch       = dateRe.matcher(text);
         Matcher currencyMatch   = currencyRe.matcher(text);
         Vector<String> dateList = new Vector<String>();

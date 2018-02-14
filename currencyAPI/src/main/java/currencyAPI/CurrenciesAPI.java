@@ -17,7 +17,7 @@ public class CurrenciesAPI {
         return currenciesProcessing.getCurrenciesExchangeRate(date, currencyX, currencyY);
     }
 
-    public ArrayList getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
+    public String getCurrenciesExchangeRateRange(String dateX, String dateY, String currency) {
         return currenciesProcessing.getCurrenciesExchangeRateRange(dateX, dateY, currency);
     }
 }

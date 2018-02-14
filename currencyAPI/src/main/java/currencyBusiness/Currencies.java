@@ -8,7 +8,7 @@ import java.lang.Thread;
 
 public class Currencies {
 
-    private String date = "";
+    private String date = "1970-01-01";
     protected static final HashMap<String, String> currencies = new HashMap<String, String>();
     private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
     private Float[][] rates;
@@ -87,7 +87,7 @@ public class Currencies {
         return currency;
     }
 
-    public String getAllExchangeRateAtDate(String date, String outCurrency) {
+    public String getAllExchangeRateAtDate(String outCurrency) {
         JsonObject jsObject = new JsonObject();
         JsonArray jsArray   = new JsonArray();
 
@@ -100,12 +100,12 @@ public class Currencies {
             jsArray.add(tmpJsObject);
         }
 
-        jsObject.add(date, jsArray);
+        jsObject.add(this.date, jsArray);
 
         return jsObject.toString();
     }
 
-    public String getExchangeRatesAtDateBetweenCurrencies(String date, String currencyX, String currencyY) {
+    public String getExchangeRatesAtDateBetweenCurrencies(String currencyX, String currencyY) {
         JsonObject jsObject     = new JsonObject();
         JsonObject jsObjectXY   = new JsonObject();
         JsonObject jsObjectYX   = new JsonObject();
@@ -122,7 +122,7 @@ public class Currencies {
         jsArray.add(jsObjectXY);
         jsArray.add(jsObjectYX);
 
-        jsObject.add(date, jsArray);
+        jsObject.add(this.date, jsArray);
 
         return jsObject.toString();
     }

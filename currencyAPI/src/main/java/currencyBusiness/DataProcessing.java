@@ -95,7 +95,7 @@ public class DataProcessing {
      */
     private void processFileLine(String line, Vector<Pair<Pair<String,String>, Float> > currenciesPair) {
         Pattern rateRe              = Pattern.compile("[0-9]+(\\.[0-9]*)?");
-        Pattern currencyRe          = Pattern.compile("USD|EUR|CHF|GBP|OMR|BHD|KWH|SGD");
+        Pattern currencyRe          = Pattern.compile("USD|EUR|CHF|GBP|OMR|BHD|KWD|SGD");
         Matcher rateMatch           = rateRe.matcher(line);
         Matcher currencyMatch       = currencyRe.matcher(line);
         Vector<Pair<String, String>> listCurRat = new Vector<Pair<String, String>>();
@@ -137,36 +137,6 @@ public class DataProcessing {
         }
 
         return currenciesPair;
-    }
-
-    /**
-     * writeFile
-     * @param date - String - new file name
-     * Wrote processed data into json file.
-     * @param currencies - HashMap - List of currencies and associated number.
-     * @param rates - Float[][] - 2D array structure of rates
-     */
-    protected void writeFile(String date, HashMap<String, Integer> currencies, Float[][] rates) {
-        try {
-            String path         = String.format("%s.json", date);
-            FileWriter writer   = new FileWriter(path);
-
-            for (HashMap.Entry<String,Integer> curr: currencies.entrySet()) {
-                writer.write(curr + ",");
-            }
-
-            for (int i=0; i < rates.length; i++) {
-                for (int j=0; j < rates[0].length; j++) {
-                    writer.write(rates[i][j] + ",");
-                }
-            }
-
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -245,10 +215,10 @@ public class DataProcessing {
         currenciesPair = readFile(date);
 
         Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
-        Currencies data = new Currencies();
+        Currencies data = new Currencies(date);
         data.setCurrenciesMap(currenciesMap);
         data.setRates(rates);
-        String response = data.getAllExchangeRateAtDate(date, currencyId);
+        String response = data.getAllExchangeRateAtDate(currencyId);
 
         return response;
 
@@ -268,10 +238,10 @@ public class DataProcessing {
         currenciesPair = readFile(date);
         Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
 
-        Currencies data = new Currencies();
+        Currencies data = new Currencies(date);
         data.setCurrenciesMap(currenciesMap);
         data.setRates(rates);
-        String response = data.getExchangeRatesAtDateBetweenCurrencies(date, currencyX, currencyY);
+        String response = data.getExchangeRatesAtDateBetweenCurrencies(currencyX, currencyY);
         return response;
     }
 
@@ -282,7 +252,7 @@ public class DataProcessing {
      * @param dateY - String - ending date
      * @param currency - String - currency id
      */
-    public ArrayList getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
+    public String getCurrenciesExchangeRateByDateInRange(String dateX, String dateY, String currency) {
         HashMap<String, Integer > currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         ArrayList<String> response = new ArrayList<String>();
@@ -304,17 +274,17 @@ public class DataProcessing {
 
             if (currenciesPair.size() > 0) {
                 Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
-                Currencies data = new Currencies();
+                Currencies data = new Currencies(date);
                 data.setCurrenciesMap(currenciesMap);
                 data.setRates(rates);
-                String str = data.getExchangeRatesAtDateBetweenCurrencies(date, currency, "USD");
+                String str = data.getExchangeRatesAtDateBetweenCurrencies(currency, "USD");
                 response.add(str);
             }
             calendar.add(Calendar.DAY_OF_MONTH, 1);
 
         }
 
-        return response;
+        return response.toString();
     }
 
 }
