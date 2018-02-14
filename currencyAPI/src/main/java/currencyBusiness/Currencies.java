@@ -8,7 +8,7 @@ import java.lang.Thread;
 
 public class Currencies {
 
-    private String date = "2017-01-01";
+    private String date = "";
     protected static final HashMap<String, String> currencies = new HashMap<String, String>();
     private HashMap<String, Integer> currenciesMap = new HashMap<String, Integer>();
     private Float[][] rates;
@@ -24,11 +24,31 @@ public class Currencies {
         this.currencies.put("USD", "United States Dollars");
     }
 
+    public Currencies(String date) {
+        this.currencies.put("BHD", "Bahraini Dinar");
+        this.currencies.put("CHF", "Swiss Franc");
+        this.currencies.put("EUR", "Euro");
+        this.currencies.put("GBP", "British Pound");
+        this.currencies.put("KWD", "Kuwaiti Dinar");
+        this.currencies.put("OMR", "Omani Rial");
+        this.currencies.put("SGD", "Singapore Dollar");
+        this.currencies.put("USD", "United States Dollars");
+        this.date = date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public String getDate() {
+        return this.date;
+    }
+
     public void setCurrenciesMap(HashMap<String, Integer> currenciesMap) {
         this.currenciesMap = currenciesMap;
     }
 
-    public HashMap<String, Integer> setCurrenciesMap() {
+    public HashMap<String, Integer> getCurrenciesMap() {
         return this.currenciesMap;
     }
 

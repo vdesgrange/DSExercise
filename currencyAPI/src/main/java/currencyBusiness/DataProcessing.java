@@ -18,6 +18,7 @@ import java.lang.String;
 import java.util.Vector;
 import java.io.*;
 import java.util.ArrayList;
+import java.lang.ArithmeticException;
 
 import currencyBusiness.Currencies;
 
@@ -40,8 +41,19 @@ public class DataProcessing {
      * @param rateY - Float - float value.
      */
     protected Pair<Float, Float> computeRatio(Float rateX, Float rateY ) {
-        Float rateXtoY = rateY/rateX;
-        Float rateYtoX = rateX/rateY;
+        Float rateXtoY = new Float(0);
+        Float rateYtoX = new Float(0);
+        try {
+            if (rateX == new Float(0) || rateY == new Float(0)) {
+                throw new ArithmeticException("Arithmetic exception occured");
+            }
+            else {
+                rateXtoY = rateY/rateX;
+                rateYtoX = rateX/rateY;
+            }
+        } catch (ArithmeticException e) {
+            e.printStackTrace();
+        }
 
         return new Pair<Float, Float>(rateXtoY, rateYtoX);
     }
@@ -285,7 +297,6 @@ public class DataProcessing {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-
 
         while (calendar.getTime().compareTo(endingDate) <= 0) {
             String date = sdf.format(calendar.getTime());
