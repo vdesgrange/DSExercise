@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
  */
 public class CurrencyBusiness {
 
-    private static final HashMap<String, String> currency = new Currencies().currencies;
+    private static final HashMap<String, String> currency = new CurrenciesProcessor().currencies;
 
     CurrencyBusiness() {
     }

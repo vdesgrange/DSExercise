@@ -44,7 +44,7 @@ public class DataProcessing {
         Float rateXtoY = new Float(0);
         Float rateYtoX = new Float(0);
         try {
-            if (rateX == new Float(0) || rateY == new Float(0)) {
+            if (rateX.doubleValue() == 0. || rateY.doubleValue() == 0.) {
                 throw new ArithmeticException("Arithmetic exception occured");
             }
             else {
@@ -213,14 +213,16 @@ public class DataProcessing {
         HashMap<String, Integer> currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
         currenciesPair = readFile(date);
+        ArrayList<String> response = new ArrayList<String>();
 
         Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
         Currencies data = new Currencies(date);
         data.setCurrenciesMap(currenciesMap);
         data.setRates(rates);
-        String response = data.getAllExchangeRateAtDate(currencyId);
+        String str = data.getAllExchangeRateAtDate(currencyId);
+        response.add(str);
 
-        return response;
+        return response.toString();
 
     }
 
@@ -234,6 +236,7 @@ public class DataProcessing {
     public String getCurrenciesExchangeRateByDateBetweenCurrencies(String date, String currencyX, String currencyY) {
         HashMap<String, Integer> currenciesMap = getCurrenciesMap();
         Vector<Pair<Pair<String,String>, Float> > currenciesPair = new Vector<Pair<Pair<String,String>, Float>>();
+        ArrayList<String> response = new ArrayList<String>();
 
         currenciesPair = readFile(date);
         Float[][] rates = getExchangeRatesMatrix(currenciesMap, currenciesPair);
@@ -241,8 +244,9 @@ public class DataProcessing {
         Currencies data = new Currencies(date);
         data.setCurrenciesMap(currenciesMap);
         data.setRates(rates);
-        String response = data.getExchangeRatesAtDateBetweenCurrencies(currencyX, currencyY);
-        return response;
+        String str = data.getExchangeRatesAtDateBetweenCurrencies(currencyX, currencyY);
+        response.add(str);
+        return response.toString();
     }
 
     /**

@@ -12,9 +12,14 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.springframework.web.client.ResourceAccessException;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.LinkedHashMap;
 import javafx.util.Pair;
 import client.APIErrorHandler;
+import com.google.gson.reflect.TypeToken;
 
 /**
  * Application
@@ -39,7 +44,9 @@ public class Application {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
             String data = restTemplate.getForObject(builder.toUriString(), String.class); // Get raw data into object
-            log.info(data); // Display raw data
+            CurrenciesProcessor currencies = new CurrenciesProcessor();
+            currencies.setData(data);
+            System.out.println(currencies.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
@@ -65,10 +72,9 @@ public class Application {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
             String data = restTemplate.getForObject(builder.toUriString(), String.class);
-            //Currencies currencies = new Currencies();
-            //currencies.setData(data);
-            //log.info(currencies.toString()); // Display raw data
-            log.info(data);
+            CurrenciesProcessor currencies = new CurrenciesProcessor();
+            currencies.setData(data);
+            System.out.println(currencies.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
@@ -93,9 +99,10 @@ public class Application {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
-            ArrayList<String> data = new ArrayList<String>();
-            data = restTemplate.getForObject(builder.toUriString(), ArrayList.class); // Get data from the Uri.
-            log.info(data.toString()); // Display raw data
+            String data = restTemplate.getForObject(builder.toUriString(), String.class); // Get data from the Uri.h
+            CurrenciesProcessor currencies = new CurrenciesProcessor();
+            currencies.setData(data);
+            System.out.println(currencies.toString()); // Display raw data
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }
