@@ -27,3 +27,10 @@ You must have [Java](https://www.java.com/en/download) 8+ and maven installed on
 * In Server API:
 > Run `mvn clean; mvn spring-boot:run`, keep folder `data` at root.
 > Or run `mvn clean; mvn package; java -jar ./target/currencies-rest-service-1.0.jar` and move folder `data` in `target`.
+
+* Test
+> Run `mvn test`
+
+## Contributing
+
+Viviane Desgrange
