@@ -65,7 +65,10 @@ public class Application {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.setErrorHandler(new APIErrorHandler());
             String data = restTemplate.getForObject(builder.toUriString(), String.class);
-            log.info(data); // Display raw data
+            //Currencies currencies = new Currencies();
+            //currencies.setData(data);
+            //log.info(currencies.toString()); // Display raw data
+            log.info(data);
         } catch (ResourceAccessException e) {
             e.printStackTrace();
         }

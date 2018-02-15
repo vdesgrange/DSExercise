@@ -4,7 +4,6 @@ import java.lang.String;
 import java.util.HashMap;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
-import java.lang.Thread;
 
 public class Currencies {
 
@@ -95,7 +94,7 @@ public class Currencies {
             JsonObject tmpJsObject = new JsonObject();
             tmpJsObject.addProperty("from", curr.getKey());
             tmpJsObject.addProperty("to", outCurrency);
-            tmpJsObject.addProperty("rate", getCurrenciesRates(curr.getKey(), outCurrency));
+            tmpJsObject.addProperty("rate", getCurrenciesRates(curr.getKey(), outCurrency).toString());
 
             jsArray.add(tmpJsObject);
         }
@@ -113,11 +112,11 @@ public class Currencies {
 
         jsObjectXY.addProperty("from", currencyX);
         jsObjectXY.addProperty("to", currencyY);
-        jsObjectXY.addProperty("rate", getCurrenciesRates(currencyX, currencyY));
+        jsObjectXY.addProperty("rate", getCurrenciesRates(currencyX, currencyY).toString());
 
         jsObjectYX.addProperty("from", currencyY);
         jsObjectYX.addProperty("to", currencyX);
-        jsObjectYX.addProperty("rate", getCurrenciesRates(currencyY, currencyX));
+        jsObjectYX.addProperty("rate", getCurrenciesRates(currencyY, currencyX).toString());
 
         jsArray.add(jsObjectXY);
         jsArray.add(jsObjectYX);
